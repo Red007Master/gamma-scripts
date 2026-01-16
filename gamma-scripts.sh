@@ -5,7 +5,8 @@ cd $WORK_DIR
 cd ..
 GAMMA_DIR=$(pwd)
 LOG_FILE_NAME=gamma-scripts.log
-LOG_FILE="$WORK_DIR/logs/$LOG_FILE_NAME"
+LOG_FOLDER="$WORK_DIR/logs"
+LOG_FILE="$LOG_FOLDER/$LOG_FILE_NAME"
 set -Eeuo pipefail
 SCRIPT_NAME="$(basename "$0")"
 START_TIME="$(date +%s)"
@@ -341,6 +342,8 @@ select() {
     done
 }
 main() {
+    # Making sure LOG_FOLDER exists.
+    mkdir -p $LOG_FOLDER
     log "Main: script started (${SCRIPT_NAME})"
     select
     log "Main: unexpected script end. Input anything to exit. \o"
