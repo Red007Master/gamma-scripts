@@ -282,7 +282,7 @@ install() {
     local end_time
     end_time="$(date +%s)"
     log "Main: action finished in $((end_time - START_TIME)) seconds"
-    select
+    user_chooses
 }
 setup() {
     log "setup: Starting GAMMA setup"
@@ -300,7 +300,7 @@ setup() {
     local end_time
     end_time="$(date +%s)"
     log "Main: action finished in $((end_time - START_TIME)) seconds"
-    select
+    user_chooses
 }
 die_exit() {
     log "Exitting due to user input selection - Exit"
@@ -318,7 +318,7 @@ greet() {
     log "[3] - Exit"
     log "-------------------------------------------------"
 }
-select() {
+user_chooses() {
     greet
     user_input_select=""
     selected=false
@@ -345,7 +345,7 @@ main() {
     # Making sure LOG_FOLDER exists.
     mkdir -p $LOG_FOLDER
     log "Main: script started (${SCRIPT_NAME})"
-    select
+    user_chooses
     log "Main: unexpected script end. Input anything to exit. \o"
     read -r user_input && exit
 }
