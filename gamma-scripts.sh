@@ -57,19 +57,6 @@ log() {
     # Log the message without color codes
     echo -e "$message" >> "$LOG_FILE"
 }
-
-
-install() {
-    cd $GAMMA_DIR
-    install_get_stalker_gamma_cli
-    install_check_stalker_gamma_cli_version
-    install_create_gamma_cli_config
-    install_full_install
-    install_update_check
-    local end_time
-    end_time="$(date +%s)"
-    log "Main: action finished in $((end_time - START_TIME)) seconds"
-}
 install_init() {
     source /etc/os-release
     cd $WORK_DIR
@@ -132,23 +119,6 @@ setup_check_if_distro_is_supported(){
     else
         log green "Init: Your distro [${ID}] is not known to have issues."
     fi
-}
-setup() {
-    log "setup: Starting GAMMA setup"
-    setup_flatpak_check
-    setup_flatpak_update
-    setup_flatpak_perms
-    setup_bottles_check_if_inital_setup_done
-    setup_bottles_get_dll
-    setup_runner_install
-    setup_bottles_makebottle
-    setup_bottles_configure
-    setup_prefix_configure
-    setup_prefix_verify
-    log "setup: processing finished"
-    local end_time
-    end_time="$(date +%s)"
-    log "Main: action finished in $((end_time - START_TIME)) seconds"
 }
 setup_runner_install() {
     log "runner_INSTALL: Checking if the runner exists"
@@ -303,6 +273,36 @@ die() {
     log "Press any key to close this program."
     read -r user_input && exit 1
 }
+install() {
+    cd $GAMMA_DIR
+    install_get_stalker_gamma_cli
+    install_check_stalker_gamma_cli_version
+    install_create_gamma_cli_config
+    install_full_install
+    install_update_check
+    local end_time
+    end_time="$(date +%s)"
+    log "Main: action finished in $((end_time - START_TIME)) seconds"
+    select
+}
+setup() {
+    log "setup: Starting GAMMA setup"
+    setup_flatpak_check
+    setup_flatpak_update
+    setup_flatpak_perms
+    setup_bottles_check_if_inital_setup_done
+    setup_bottles_get_dll
+    setup_runner_install
+    setup_bottles_makebottle
+    setup_bottles_configure
+    setup_prefix_configure
+    setup_prefix_verify
+    log "setup: processing finished"
+    local end_time
+    end_time="$(date +%s)"
+    log "Main: action finished in $((end_time - START_TIME)) seconds"
+    select
+}
 die_exit() {
     log "Exitting due to user input selection - Exit"
     log "Bye!"
@@ -344,8 +344,7 @@ main() {
     log "Main: script started (${SCRIPT_NAME})"
     greet
     select
-    
-    log "Main: script end. Input anything to exit. \o"
+    log "Main: unexpected script end. Input anything to exit. \o"
     read -r user_input && exit
 }
 main "$@"
