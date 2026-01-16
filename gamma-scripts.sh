@@ -13,10 +13,12 @@ START_TIME="$(date +%s)"
 DOWNLOAD_THREADS="2"
 GAMMA_FOLDER="GAMMA"
 ANOMALY_FOLDER="Anomaly"
-MAJOR_VERSION=1
 WINEFIX=true
 BOTTLE_NAME="StalkerGAMMA"
 LAUNCHER_NAME="ModOrganizer"
+# ---- For stalker-gamma-cli github acess ----
+MAJOR_VERSION=1
+TARGET="/download/$MAJOR_VERSION."
 # ---- Global vars ----
 SCRIPT_NAME="$(basename "$0")"
 START_TIME="$(date +%s)"
@@ -31,9 +33,6 @@ BOTTLES_LFLEX_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/lat
 BOTTLES_RUNNER_WINE="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/files/bin/wine"
 BOTTLES_RUNNER_WINETRICKS="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/protonfixes/winetricks"
 TROUBLESOME_DISTROS=(bobrkurwa goyim_os)
-# --- For stalker-gamma-cli github acess
-MAJOR_VERSION=1
-TARGET="/download/$MAJOR_VERSION."
 log() {
     local color_reset="\033[0m"
     local color=""
@@ -311,19 +310,21 @@ greet() {
     log "version: [$SCRIPT_VERSION]"
     log "For ducumentation see:"
     log "https://github.com/ViridiLV/G.A.M.M.A-Community-Linux-Install-Setup-shell-scripts"
-}
-select() {
     log "-------------------------------------------------"
     log "Possible actions:"
     log "[1] - Install game files with stalker-gamma-cli"
     log "[2] - Setup flatpak GAMMA bottle"
     log "[3] - Exit"
     log "-------------------------------------------------"
+}
+select() {
+    greet
     user_input_select=""
     selected=false
     while [ selected==false ]; do
+        greet
         log "Please select your action:"
-        read -p user_input
+        read -r user_input
         if user_input_select==1; then
             install_init
             install
@@ -341,7 +342,6 @@ select() {
 }
 main() {
     log "Main: script started (${SCRIPT_NAME})"
-    greet
     select
     log "Main: unexpected script end. Input anything to exit. \o"
     read -r user_input && exit
