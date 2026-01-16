@@ -326,18 +326,19 @@ user_chooses() {
         greet
         log "Please select your action:"
         read -r user_input
-        if user_input_select=="1"; then
+        user_input_select="$user_input"
+        if [ "$user_input_select" = "1" ]; then
             install_init
             install
             selected=true
-        elif user_input_select=="2"; then
+        elif [ "$user_input_select" = "2" ]; then
             setup_init
             setup
             selected=true
-        elif user_input_select=="3"; then
+        elif [ "$user_input_select" = "3" ]; then
             die_exit
         else
-            log red "[${user_input_select}]Not a valid input!"
+            log red "[${user_input_select}] - Not a valid input!"
         fi
     done
 }
