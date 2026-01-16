@@ -98,7 +98,7 @@ setup_init() {
     log cyan "Init: [BOTTLES_RUNNER_WINETRICKS] is [${BOTTLES_RUNNER_WINETRICKS}]"
     log cyan "Init: Distro info:"
     log cyan "Init: [ID] is [${ID}]"
-    check_if_distro_is_supported
+    setup_check_if_distro_is_supported
     log "Init: completed successfully"
 }
 setup_check_if_distro_is_supported(){
