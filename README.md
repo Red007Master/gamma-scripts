@@ -28,7 +28,7 @@ For example:
 ```
 cd /home/$USER/Games/GAMMA
 ```
-1.2. Download and make the script executable:
+1.2. Download the script file:
 
 ```
 wget https://raw.githubusercontent.com/ViridiLV/gamma-scripts/refs/heads/main/gamma-scripts.sh
