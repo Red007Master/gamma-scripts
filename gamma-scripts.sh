@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SCRIPT_VERSION="1.0"
+SCRIPT_VERSION="1.1"
 GAMMA_DIR=$(pwd)
 LOG_FILE_NAME=gamma-scripts.log
 LOG_FOLDER="$GAMMA_DIR/logs"
