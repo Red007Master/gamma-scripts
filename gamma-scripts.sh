@@ -92,7 +92,7 @@ setup_init() {
     log cyan "Init: [BOTTLE_NAME] is [${BOTTLE_NAME}]"
     log cyan "Init: [LAUNCHER_NAME] is [${LAUNCHER_NAME}]"
     log cyan "Init: [RUNNER_NAME] is [${RUNNER_NAME}]"
-    log cyan "Init: [WINEFITX] is [${WINEFITX}]"
+    log cyan "Init: [WINEFIX] is [${WINEFIX}]"
     log cyan "Init: [BOTTLES_PREFIX_PATH] is [${BOTTLES_PREFIX_PATH}]"
     log cyan "Init: [BOTTLES_RUNNER_PATH] is [${BOTTLES_RUNNER_PATH}]"
     log cyan "Init: [BOTTLES_RUNNER_WINE] is [${BOTTLES_RUNNER_WINE}]"
