@@ -27,7 +27,6 @@ Make a folder and `cd` into it in your terminal.
 For example:
 ```
 cd /home/$USER/Games/GAMMA
-
 ```
 1.2. Download and make the script executable:
 
