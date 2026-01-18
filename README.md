@@ -11,7 +11,7 @@ For scripts to work need libraries/packages that it uses.
 
 For Ubuntu/Debian systems:
 ```
-apt install flatpak wget tar fq findutils
+apt install flatpak wget tar
 ```
 
 For Others... *to be included*
