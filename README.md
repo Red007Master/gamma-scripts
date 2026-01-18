@@ -56,7 +56,7 @@ Version numbers inside the scripts are informative for troubleshooting logs.
   
   After that the script will proceed to install the game using it. 
   
-  The folder structure of your chosen GAMMA main folder should look like this:
+  The folder structure of your chosen GAMMA main folder should look something like this:
   ```
   ~/Games/GAMMA$ tree -L 1
   .
@@ -79,26 +79,51 @@ The setup script aims to streamline this  process by scripting the set up of fla
   - **3.1** With the script open and idle, type in the number that corresponds the option "setup GAMMA", then press Enter.
   
   - **3.2** If you don't have flatpak bottles installed, the script will attempt to install flatpak bottles.
+
+      <img alt="image" src="https://github.com/ViridiLV/gamma-scripts/blob/main/Documentation/Pictures/bottles_install_ilu.png" />
   
       It will ask permission to do so, simply type `y` and hit enter to allow the installation of Bottles.
   
-  - **3.3.** If Bottles does not have `filesystem=host` access, it may prompt you to input sudo password. 
+  - **3.3.** If Bottles does not have `filesystem=host` access, it may prompt you to **input sudo password**. 
   
-    Not having flatpak permission acess to game files may cause missing QT.dll errors later.
+    Not having flatpak permissions to acess game files may cause missing QT.dll errors later.
   
   - **3.4** Then, if the bottles just got installed and was not installed and set up previously, the script will **prompt you to open Bottles and complete initial setup**.
-    <img width="661" height="121" alt="image" src="https://github.com/ViridiLV/gamma-scripts/blob/main/Documentation/Pictures/setup_bottles_ilustration.png" />
-
+    
+       <img width="661" height="121" alt="image" src="https://github.com/ViridiLV/gamma-scripts/blob/main/Documentation/Pictures/setup_bottles_ilustration.png" />
+      
+    - Open the flatpak Bottles and you will be greeted with a Welcome screen that guides you through the inital bottles setup
+    
+       <img alt="image" src="https://github.com/ViridiLV/gamma-scripts/blob/main/Documentation/Pictures/bottles_greet.png" />
+       
+    - Click next/continue until the intial setup is done:
+      
+       <img alt="image" src="https://github.com/ViridiLV/gamma-scripts/blob/main/Documentation/Pictures/bottles_init_finish.png" />
   
-      Once done, press X to close bottles, then select the script terminal window and enter anything to continue
+    - Once initial setup is done, Press `Start susing bottles`, press `X` to close bottles, then select the script terminal window and enter anything to continue
   
   - **3.5** When prompted, press `OK` on the small pop up screens.
+
+    <img alt="image" src="https://github.com/ViridiLV/gamma-scripts/blob/main/Documentation/Pictures/dll1_ilu.png" />
   
     You may have a couple of small pop up windows saying ".dll registered succesfully".
   
     Simply press `OK`, or hit enter to continue.
   
-  - **3.6.** The script will return to the action selection screen, at this point the bottle is set up and you can launch ModOrganizer from the StalkerGAMMA bottle in Bottles to start playing the game.
+  - **3.6.** The script will return to the action selection screen, at this point the bottle is set up.
+
+    You can launch `ModOrganizer` from the `StalkerGAMMA` bottle in Bottles to start playing the game!
+    
+## Step 4 - Running the game
+
+You can run via the Bottles or using a terminal command if you don't want to interact with Bottles menus:
+
+ - **a)** Open bottles "StalkerGAMMA", press play on Program "ModOrganizer"
+
+ - **b)** Use a launcher, script or terminal command:
+   ```
+      flatpak run --command=bottles-cli com.usebottles.bottles run -b "StalkerGAMMA" -p "ModOrganizer"
+   ```
 
 ## Step 4 - Troubleshooting
 
