@@ -55,6 +55,18 @@ Version numbers inside the scripts are informative for troubleshooting logs.
   The script will download latest release from [https://github.com/FaithBeam/stalker-gamma-cli] 
   
   After that the script will proceed to install the game using it. 
+  
+  The folder structure of you gamma main folder should look like this:
+  ```
+  ~/Games/GAMMA$ tree -L 1
+  .
+  ├── Anomaly/
+  ├── cache/
+  ├── GAMMA/
+  ├── gamma-scripts.sh
+  ├── logs/
+  └── stalker-gamma.AppImage
+  ```
 ## Step 3 - Set up the game
 
 Step 2 only lets you obtain game files, as if you installed the game on Windows, however this does not enable you to play GAMMA on Linux.
