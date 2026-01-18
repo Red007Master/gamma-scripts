@@ -22,13 +22,13 @@ RUNNER_NAME="ge-proton9-20"
 STALKER_GAMMA_CLI_URL="https://github.com/FaithBeam/stalker-gamma-cli/releases/latest/download/stalker-gamma+linux.x64.AppImage"
 PROTON_GE_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-20/GE-Proton9-20.tar.gz"
 PROTON_GE_NAME="GE-Proton9-20" # fix this latter with name-agnostic code
-BOTTLES_CHECK_PATH="/home/$USER/.var/app/com.usebottles.bottles"
-BOTTLES_PREFIX_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/bottles/$BOTTLE_NAME"
-BOTTLES_RUNNER_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/runners/"
-BOTTLES_DXVK_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/dxvk/"
-BOTTLES_VKD3D_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/vkd3d/"
-BOTTLES_NVAPI_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/nvapi/"
-BOTTLES_LFLEX_PATH="/home/$USER/.var/app/com.usebottles.bottles/data/bottles/latencyflex/"
+BOTTLES_CHECK_PATH="~/.var/app/com.usebottles.bottles"
+BOTTLES_PREFIX_PATH="~/.var/app/com.usebottles.bottles/data/bottles/bottles/$BOTTLE_NAME"
+BOTTLES_RUNNER_PATH="~/.var/app/com.usebottles.bottles/data/bottles/runners/"
+BOTTLES_DXVK_PATH="~/.var/app/com.usebottles.bottles/data/bottles/dxvk/"
+BOTTLES_VKD3D_PATH="~/.var/app/com.usebottles.bottles/data/bottles/vkd3d/"
+BOTTLES_NVAPI_PATH="~/.var/app/com.usebottles.bottles/data/bottles/nvapi/"
+BOTTLES_LFLEX_PATH="~/.var/app/com.usebottles.bottles/data/bottles/latencyflex/"
 BOTTLES_RUNNER_WINE="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/files/bin/wine"
 BOTTLES_RUNNER_WINETRICKS="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/protonfixes/winetricks"
 TROUBLESOME_DISTROS=(bobrkurwa goyim_os)
@@ -155,14 +155,14 @@ setup_prefix_verify() {
     fi
 }
 setup_bottles_check_if_inital_setup_done() {
-    cd /home/$USER/.var/app
+    cd ~.var/app
     while [ ! -d com.usebottles.bottles ]; do
-        log red "No Bottles directory 'com.usebottles.bottles' found in /home/$USER/.var/app "
+        log red "No Bottles directory 'com.usebottles.bottles' found in ~/.var/app "
         log yellow "Please open Bottles and complete initial setup!"
         log yellow "When done, close bottles and press any key to attempt Stalker GAMMA bottle setup!"
         read -r user_input
     done
-    log green "Bottles directory 'com.usebottles.bottles' was found in /home/$USER/.var/app"
+    log green "Bottles directory 'com.usebottles.bottles' was found in ~/.var/app"
     log "Continuing setting up of bottle for Stalker GAMMA"
 }
 setup_bottles_get_dll() {
