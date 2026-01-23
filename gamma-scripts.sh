@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SCRIPT_VERSION="1.1"
+SCRIPT_VERSION="1.2"
 GAMMA_DIR="$(pwd)"
 LOG_FILE_NAME="gamma-scripts$(date --utc +%Y-%m-%dT%H:%M:%S%Z).log"
 LOG_FOLDER="$GAMMA_DIR/logs"
@@ -22,13 +22,13 @@ RUNNER_NAME="ge-proton9-20"
 STALKER_GAMMA_CLI_URL="https://github.com/FaithBeam/stalker-gamma-cli/releases/latest/download/stalker-gamma+linux.x64.AppImage"
 PROTON_GE_URL="https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton9-20/GE-Proton9-20.tar.gz"
 PROTON_GE_NAME="GE-Proton9-20" # fix this latter with name-agnostic code
-BOTTLES_CHECK_PATH="~/.var/app/com.usebottles.bottles"
-BOTTLES_PREFIX_PATH="~/.var/app/com.usebottles.bottles/data/bottles/bottles/$BOTTLE_NAME"
-BOTTLES_RUNNER_PATH="~/.var/app/com.usebottles.bottles/data/bottles/runners"
-BOTTLES_DXVK_PATH="~/.var/app/com.usebottles.bottles/data/bottles/dxvk"
-BOTTLES_VKD3D_PATH="~/.var/app/com.usebottles.bottles/data/bottles/vkd3d"
-BOTTLES_NVAPI_PATH="~/.var/app/com.usebottles.bottles/data/bottles/nvapi"
-BOTTLES_LFLEX_PATH="~/.var/app/com.usebottles.bottles/data/bottles/latencyflex"
+BOTTLES_CHECK_PATH=".var/app/com.usebottles.bottles"
+BOTTLES_PREFIX_PATH=".var/app/com.usebottles.bottles/data/bottles/bottles/$BOTTLE_NAME"
+BOTTLES_RUNNER_PATH=".var/app/com.usebottles.bottles/data/bottles/runners"
+BOTTLES_DXVK_PATH=".var/app/com.usebottles.bottles/data/bottles/dxvk"
+BOTTLES_VKD3D_PATH=".var/app/com.usebottles.bottles/data/bottles/vkd3d"
+BOTTLES_NVAPI_PATH=".var/app/com.usebottles.bottles/data/bottles/nvapi"
+BOTTLES_LFLEX_PATH=".var/app/com.usebottles.bottles/data/bottles/latencyflex"
 BOTTLES_RUNNER_WINE="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/files/bin/wine"
 BOTTLES_RUNNER_WINETRICKS="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/protonfixes/winetricks"
 TROUBLESOME_DISTROS=(bobrkurwa goyim_os)
@@ -89,14 +89,14 @@ setup_check_if_distro_is_supported(){
 }
 setup_runner_install() {
     log "setup_runner_install: Checking if the runner exists"
-    cd $BOTTLES_RUNNER_PATH
+    cd ~/$BOTTLES_RUNNER_PATH
     if [ -d "$RUNNER_NAME" ]; then
         log green "The folder of runner '$RUNNER_NAME' already exists!"
         
     else
         log red "No runner '$RUNNER_NAME' detected!"
         log yellow "runner_install: Installing proton in Bottles runners folder"
-        cd $BOTTLES_RUNNER_PATH
+        cd ~/$BOTTLES_RUNNER_PATH
         wget $PROTON_GE_URL -O $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
         tar -xvzf $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
         mv $PROTON_GE_NAME ge-proton9-20 # TODO: Name-agnostic code with regex or someting
@@ -141,17 +141,17 @@ setup_bottles_configure() {
 setup_prefix_configure() {
     log "setup_prefix_configure: Installing dependencies"
     if [ $WINEFIX==1 ]; then
-        WINE="$BOTTLES_RUNNER_WINE" WINEPREFIX="$BOTTLES_PREFIX_PATH" $BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else
-        WINEPREFIX="$BOTTLES_PREFIX_PATH" $BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz >> >(tee "$LOG_FILE") > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz >> >(tee "$LOG_FILE") > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     fi
 }
 setup_prefix_verify() {
     log cyan "setup_prefix_verify: Listing detected dependencies, might be useful for debugging, might be bugged"
     if [ $WINEFIX==1 ]; then
-        WINE="$BOTTLES_RUNNER_WINE" WINEPREFIX="$BOTTLES_PREFIX_PATH" $BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else
-        WINEPREFIX="$BOTTLES_PREFIX_PATH" $BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     fi
 }
 setup_bottles_check_if_inital_setup_done() {
@@ -167,7 +167,7 @@ setup_bottles_check_if_inital_setup_done() {
 }
 setup_bottles_get_dll() {
     log "bottles_get_dll: Get some older .dll in case Bottles auto-download-latest was broken"
-    cd $BOTTLES_DXVK_PATH
+    cd ~/$BOTTLES_DXVK_PATH
     log "Checking if Bottles failed to download a DXVK version"
     if ! ls -d dxvk*/ >/dev/null 2>&1; then
         log red "No DXVK found"
@@ -177,7 +177,7 @@ setup_bottles_get_dll() {
         rm -v dxvk*.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "DXVK found"
     fi
-    cd $BOTTLES_VKD3D_PATH
+    cd ~/$BOTTLES_VKD3D_PATH
     log "Checking if Bottles failed to download a VKD3D version"
     if ! ls -d vkd3d*/ >/dev/null 2>&1; then
         log red "No VKD3D found"
@@ -189,17 +189,17 @@ setup_bottles_get_dll() {
     else log green "VKD3D found"
     fi
     log "Checking if Bottles failed to download a NVAPI version"
-    cd $BOTTLES_NVAPI_PATH
+    cd ~/$BOTTLES_NVAPI_PATH
     if ! ls -d dxvk-nvapi*/ >/dev/null 2>&1; then
         log red "No dxvk-nvapi found"
         log yellow "Getting dxvk-nvapi"
         wget https://github.com/jp7677/dxvk-nvapi/releases/download/v0.9.0/dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         mkdir dxvk-nvapi-v0.9.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        tar -xf dxvk-nvapi-v0.9.0.tar.gz -C "$BOTTLES_NVAPI_PATH/dxvk-nvapi-v0.9.0" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        tar -xf dxvk-nvapi-v0.9.0.tar.gz -C "~/$BOTTLES_NVAPI_PATH/dxvk-nvapi-v0.9.0" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         rm -v dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "dxvk-nvapi found"
     fi
-    cd $BOTTLES_LFLEX_PATH
+    cd ~/$BOTTLES_LFLEX_PATH
     log "Checking if Bottles failed to download a LatencyFlex version"
     if ! ls -d latencyflex*/ >/dev/null 2>&1; then
         log red "No latencyflex found"
@@ -273,16 +273,17 @@ setup() {
 }
 
 greet() {
+    log "-------------------------------------------------------"
     log "Stalker GAMMA community install/setup shell scripts"
     log "version: [$SCRIPT_VERSION]"
     log "For ducumentation see:"
     log "https://github.com/ViridiLV/gamma-scripts/"
-    log "-------------------------------------------------"
+    log "-------------------------------------------------------"
     log "Possible actions:"
     log "[1] - Install game files with stalker-gamma-cli"
     log "[2] - Setup flatpak GAMMA bottle"
     log "[3] - Exit"
-    log "-------------------------------------------------"
+    log "-------------------------------------------------------"
 }
 user_chooses() {
     user_input_select=""
