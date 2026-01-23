@@ -1,5 +1,5 @@
 # S.T.A.L.K.E.R G.A.M.M.A Community Linux Install/Setup shell scripts
-
+(STILL EXPERIMENTAL AND WORK IN PROGRESS)
 Community made scripts made to semi-automatically install gamma and  set up a bottle to play the game on Linux systems.
 
 Includes a step-by-step guide.
