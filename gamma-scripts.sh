@@ -155,7 +155,7 @@ setup_prefix_verify() {
     fi
 }
 setup_bottles_check_if_inital_setup_done() {
-    cd ~.var/app
+    cd ~/.var/app
     while [ ! -d com.usebottles.bottles ]; do
         log red "No Bottles directory 'com.usebottles.bottles' found in ~/.var/app "
         log yellow "Please open Bottles and complete initial setup!"
