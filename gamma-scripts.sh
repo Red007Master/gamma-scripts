@@ -125,7 +125,7 @@ setup_flatpak_perms() {
     else
         log red "Bottles does not have filesystem=host acess."
         log yellow "Asking permission to execute: flatpak override com.usebottles.bottles --filesystem=host ?"
-        flatpak install flathub com.usebottles.bottles
+        sudo flatpak install flathub com.usebottles.bottles
     fi
 }
 setup_bottles_makebottle() {
