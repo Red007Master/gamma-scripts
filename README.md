@@ -14,7 +14,10 @@ For scripts to work need libraries/packages that it uses.
 apt install flatpak wget tar
 ```
 
-For Others... *to be included*
+- **For Arch-based systems:**
+```
+sudo pacman -S wget tar flatpak
+```
 
 ## Step 1 - getting the scripts
 
