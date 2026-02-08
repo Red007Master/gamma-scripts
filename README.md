@@ -7,7 +7,7 @@ Includes a step-by-step guide.
 # Guide
 ## Step 0 - Obtaining dependencies to run the scripts
 
-For scripts to work need libraries/packages that it uses.
+For scripts to work it will need libraries/packages that it uses.
 
 - **For Ubuntu/Debian systems:**
 ```
