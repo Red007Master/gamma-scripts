@@ -16,7 +16,7 @@ apt install flatpak wget tar
 
 - **For Arch-based systems:**
 ```
-sudo pacman -S wget tar flatpak
+sudo pacman -S flatpak wget tar
 ```
 
 ## Step 1 - getting the scripts
