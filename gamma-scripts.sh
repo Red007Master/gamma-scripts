@@ -34,9 +34,8 @@ BOTTLES_RUNNER_WINETRICKS="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/protonfixes/winetri
 TROUBLESOME_DISTROS=(bobrkurwa goyim_os)
 
 install_init() {
-    source /etc/os-release
-
-    cd $GAMMA_DIR
+    run_command source /etc/os-release
+    run_command cd $GAMMA_DIR
 
     log "install_Init: starting initialization"
     log cyan "install_Init: Work variables:"
@@ -50,9 +49,8 @@ install_init() {
     log "install_Init: completed successfully"
 }
 setup_init() {
-    source /etc/os-release
-   
-    cd $GAMMA_DIR
+    run_command source /etc/os-release
+    run_command cd $GAMMA_DIR
 
     log "setup_init: starting initialization"
     log cyan "setup_init: Work variables:"
@@ -89,24 +87,24 @@ setup_check_if_distro_is_supported(){
 }
 setup_runner_install() {
     log "setup_runner_install: Checking if the runner exists"
-    cd ~/$BOTTLES_RUNNER_PATH
+    run_command cd ~/$BOTTLES_RUNNER_PATH
     if [ -d "$RUNNER_NAME" ]; then
         log green "The folder of runner '$RUNNER_NAME' already exists!"
         
     else
         log red "No runner '$RUNNER_NAME' detected!"
         log yellow "runner_install: Installing proton in Bottles runners folder"
-        cd ~/$BOTTLES_RUNNER_PATH
+        run_command cd ~/$BOTTLES_RUNNER_PATH
         wget $PROTON_GE_URL -O $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
-        tar -xvzf $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
-        mv $PROTON_GE_NAME ge-proton9-20 # TODO: Name-agnostic code with regex or someting
-        rm -v $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
+        run_command tar -xvzf $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
+        run_command mv $PROTON_GE_NAME ge-proton9-20 # TODO: Name-agnostic code with regex or someting
+        run_command rm -v $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
         log green "Runner '$RUNNER_NAME' installed!"
     fi
 }
 setup_flatpak_update() {
     log "setup_flatpak_update: Updating flatpak packages"
-    flatpak update
+    run_command flatpak update
 }
 setup_flatpak_check() {
     log "setup_flatpak_check: Checking if flatpak Bottles installed."
@@ -115,7 +113,7 @@ setup_flatpak_check() {
     else
         log red "com.usebottles.bottles is not installed."
         log yellow "Installing now"
-        flatpak install flathub com.usebottles.bottles
+        run_command flatpak install flathub com.usebottles.bottles
     fi
 }
 setup_flatpak_perms() {
@@ -125,37 +123,37 @@ setup_flatpak_perms() {
     else
         log red "Bottles does not have filesystem=host acess."
         log yellow "Asking permission to execute: flatpak override com.usebottles.bottles --filesystem=host ?"
-        flatpak override com.usebottles.bottles --filesystem=host 2> >(tee -a "$LOG_FILE" >&2)
+        run_command flatpak override com.usebottles.bottles --filesystem=host 2> >(tee -a "$LOG_FILE" >&2)
     fi
 }
 setup_bottles_makebottle() {
     log cyan "setup_bottles_makebottle: Making a bottle for the game"
-    flatpak run --command=bottles-cli com.usebottles.bottles new --bottle-name "$BOTTLE_NAME" --environment gaming --runner "$RUNNER_NAME" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command flatpak run --command=bottles-cli com.usebottles.bottles new --bottle-name "$BOTTLE_NAME" --environment gaming --runner "$RUNNER_NAME" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     log cyan "setup_bottles_makebottle: bottles-cli new ended"
 }
 setup_bottles_configure() {
     log cyan "setup_bottles_configure: Adding MO2 to bottles"
-    flatpak run --command=bottles-cli com.usebottles.bottles add -b "$BOTTLE_NAME" --name "$LAUNCHER_NAME" --path "$GAMMA_DIR/GAMMA/ModOrganizer.exe" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command flatpak run --command=bottles-cli com.usebottles.bottles add -b "$BOTTLE_NAME" --name "$LAUNCHER_NAME" --path "$GAMMA_DIR/GAMMA/ModOrganizer.exe" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     log cyan "\nbottles_configure: bottles-cli add ended"
 }
 setup_prefix_configure() {
     log "setup_prefix_configure: Installing dependencies"
     if [ $WINEFIX==1 ]; then
-        WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else
-        WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz >> >(tee "$LOG_FILE") > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz >> >(tee "$LOG_FILE") > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     fi
 }
 setup_prefix_verify() {
     log cyan "setup_prefix_verify: Listing detected dependencies, might be useful for debugging, might be bugged"
     if [ $WINEFIX==1 ]; then
-        WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else
-        WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS list-installed > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     fi
 }
 setup_bottles_check_if_inital_setup_done() {
-    cd ~/.var/app
+    run_command cd ~/.var/app
     while [ ! -d com.usebottles.bottles ]; do
         log red "No Bottles directory 'com.usebottles.bottles' found in ~/.var/app "
         log yellow "Please open Bottles and complete initial setup!"
@@ -167,82 +165,82 @@ setup_bottles_check_if_inital_setup_done() {
 }
 setup_bottles_get_dll() {
     log "bottles_get_dll: Get some older .dll in case Bottles auto-download-latest was broken"
-    cd ~/$BOTTLES_DXVK_PATH
+    run_command cd ~/$BOTTLES_DXVK_PATH
     log "Checking if Bottles failed to download a DXVK version"
     if ! ls -d dxvk*/ >/dev/null 2>&1; then
         log red "No DXVK found"
         log yellow "Getting DXVK"
-        wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        tar -xf dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        rm -v dxvk*.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command tar -xf dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command rm -v dxvk*.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "DXVK found"
     fi
-    cd ~/$BOTTLES_VKD3D_PATH
+    run_command cd ~/$BOTTLES_VKD3D_PATH
     log "Checking if Bottles failed to download a VKD3D version"
     if ! ls -d vkd3d*/ >/dev/null 2>&1; then
         log red "No VKD3D found"
         log yellow "Getting VKD3D"
         wget https://github.com/HansKristian-Work/vkd3d-proton/releases/download/v3.0b/vkd3d-proton-3.0b.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        tar -xf vkd3d-proton-3.0b.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        mv vkd3d-proton-3.0b vkd3d-proton-3.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        rm -v vkd3d-proton*.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command tar -xf vkd3d-proton-3.0b.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command mv vkd3d-proton-3.0b vkd3d-proton-3.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command rm -v vkd3d-proton*.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "VKD3D found"
     fi
     log "Checking if Bottles failed to download a NVAPI version"
-    cd ~/$BOTTLES_NVAPI_PATH
+    run_command cd ~/$BOTTLES_NVAPI_PATH
     if ! ls -d dxvk-nvapi*/ >/dev/null 2>&1; then
         log red "No dxvk-nvapi found"
         log yellow "Getting dxvk-nvapi"
-        wget https://github.com/jp7677/dxvk-nvapi/releases/download/v0.9.0/dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        mkdir dxvk-nvapi-v0.9.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        tar -xf dxvk-nvapi-v0.9.0.tar.gz -C "~/$BOTTLES_NVAPI_PATH/dxvk-nvapi-v0.9.0" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        rm -v dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command wget https://github.com/jp7677/dxvk-nvapi/releases/download/v0.9.0/dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command mkdir dxvk-nvapi-v0.9.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command tar -xf dxvk-nvapi-v0.9.0.tar.gz -C "~/$BOTTLES_NVAPI_PATH/dxvk-nvapi-v0.9.0" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command rm -v dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "dxvk-nvapi found"
     fi
-    cd ~/$BOTTLES_LFLEX_PATH
+    run_command cd ~/$BOTTLES_LFLEX_PATH
     log "Checking if Bottles failed to download a LatencyFlex version"
     if ! ls -d latencyflex*/ >/dev/null 2>&1; then
         log red "No latencyflex found"
         log yellow "Getting latencyflex"
-        wget https://github.com/ishitatsuyuki/LatencyFleX/releases/download/v0.1.1/latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        tar -xf latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
-        rm -v latencyflex*.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command wget https://github.com/ishitatsuyuki/LatencyFleX/releases/download/v0.1.1/latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command tar -xf latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command rm -v latencyflex*.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "latencyflex found"
     fi
 }
 install_update_check() {
-    cd $GAMMA_DIR
+    run_command cd $GAMMA_DIR
     log cyan "update_check: Commencing update check for verification"
-    ./stalker-gamma*.AppImage update check > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command ./stalker-gamma*.AppImage update check > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
 }
 install_full_install() {
-    cd $GAMMA_DIR
+    run_command cd $GAMMA_DIR
     log cyan "install_full_install: Commencing full install"
-    ./stalker-gamma*.AppImage full-install > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command ./stalker-gamma*.AppImage full-install > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
 }
 install_create_gamma_cli_config() {
-    cd $GAMMA_DIR
+    run_command cd $GAMMA_DIR
     log cyan "install_create_gamma_cli_config: Making a config in the stalker-gamma-cli"
-    ./stalker-gamma*.AppImage config create --anomaly "$ANOMALY_FOLDER" --gamma "$GAMMA_FOLDER" --cache "$CACHE_FOLDER" --download-threads "$DOWNLOAD_THREADS" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command ./stalker-gamma*.AppImage config create --anomaly "$ANOMALY_FOLDER" --gamma "$GAMMA_FOLDER" --cache "$CACHE_FOLDER" --download-threads "$DOWNLOAD_THREADS" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     log cyan "install_create_gamma_cli_config: done"
 }
 install_check_stalker_gamma_cli_version() {
-    cd $GAMMA_DIR
+    run_command cd $GAMMA_DIR
     log cyan "install_check_stalker_gamma_cli_version: Check version:"
-    ./stalker-gamma.AppImage --version > >(tee> >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2) -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command ./stalker-gamma.AppImage --version > >(tee> >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2) -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
 }
 install_get_stalker_gamma_cli() {
-    cd $GAMMA_DIR
+    run_command cd $GAMMA_DIR
 
     log cyan "install_get_stalker_gamma_cli: Downloading latest release of stalker-gamma-cli"
 
-    wget $STALKER_GAMMA_CLI_URL -O stalker-gamma.AppImage
+    run_command wget $STALKER_GAMMA_CLI_URL -O stalker-gamma.AppImage
 
-    chmod +x stalker-gamma.AppImage > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+    run_command chmod +x stalker-gamma.AppImage > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
 }
 
 install() {
-    cd $GAMMA_DIR
+    run_command cd $GAMMA_DIR
     install_get_stalker_gamma_cli
     install_check_stalker_gamma_cli_version
     install_create_gamma_cli_config
@@ -345,12 +343,16 @@ die() {
     read -r user_input && exit 1
 }
 
+run_command() {
+    log magenta "Running Command: [$*]" | tee -a "$LOG_FILE"
+    eval "$@"
+}
 
 main() {
-    mkdir -p $GAMMA_DIR
-    cd $GAMMA_DIR
+    run_command mkdir -p $GAMMA_DIR
+    run_command cd $GAMMA_DIR
     # Making sure LOG_FOLDER exists.
-    mkdir -p $LOG_FOLDER
+    run_command mkdir -p $LOG_FOLDER
     log "Main: script started (${SCRIPT_NAME})"
     user_chooses
     log "Main: unexpected script end. Input anything to exit. \o"
