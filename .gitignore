@@ -1,5 +1,10 @@
 #Ignore
 resources/
+Anomaly/
+GAMMA/
+cache/
+logs/
+stalker-gamma.AppImage
 # Logs
 [Ll]og/
 [Ll]ogs/
