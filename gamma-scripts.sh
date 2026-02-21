@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-SCRIPT_VERSION="1.3"
+SCRIPT_VERSION="1.4"
 GAMMA_DIR="$(pwd)"
 LOG_FILE_NAME="gamma-scripts$(date --utc +%Y-%m-%dT%H:%M:%S%Z).log"
 LOG_FOLDER="$GAMMA_DIR/logs"
@@ -95,7 +95,7 @@ setup_runner_install() {
         log red "No runner '$RUNNER_NAME' detected!"
         log yellow "runner_install: Installing proton in Bottles runners folder"
         run_command cd ~/$BOTTLES_RUNNER_PATH
-        wget $PROTON_GE_URL -O $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
+        run_command curl -Lo "./$PROTON_GE_NAME.tar.gz" $PROTON_GE_URL > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2) # TODO: Name-agnostic code with regex or someting
         run_command tar -xvzf $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
         run_command mv $PROTON_GE_NAME ge-proton9-20 # TODO: Name-agnostic code with regex or someting
         run_command rm -v $PROTON_GE_NAME.tar.gz # TODO: Name-agnostic code with regex or someting
@@ -170,7 +170,7 @@ setup_bottles_get_dll() {
     if ! ls -d dxvk*/ >/dev/null 2>&1; then
         log red "No DXVK found"
         log yellow "Getting DXVK"
-        run_command wget https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command curl -LO https://github.com/doitsujin/dxvk/releases/download/v2.7.1/dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command tar -xf dxvk-2.7.1.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command rm -v dxvk*.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "DXVK found"
@@ -180,7 +180,7 @@ setup_bottles_get_dll() {
     if ! ls -d vkd3d*/ >/dev/null 2>&1; then
         log red "No VKD3D found"
         log yellow "Getting VKD3D"
-        wget https://github.com/HansKristian-Work/vkd3d-proton/releases/download/v3.0b/vkd3d-proton-3.0b.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command curl -LO https://github.com/HansKristian-Work/vkd3d-proton/releases/download/v3.0b/vkd3d-proton-3.0b.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command tar -xf vkd3d-proton-3.0b.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command mv vkd3d-proton-3.0b vkd3d-proton-3.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command rm -v vkd3d-proton*.tar.zst > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
@@ -191,7 +191,7 @@ setup_bottles_get_dll() {
     if ! ls -d dxvk-nvapi*/ >/dev/null 2>&1; then
         log red "No dxvk-nvapi found"
         log yellow "Getting dxvk-nvapi"
-        run_command wget https://github.com/jp7677/dxvk-nvapi/releases/download/v0.9.0/dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command curl -LO https://github.com/jp7677/dxvk-nvapi/releases/download/v0.9.0/dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command mkdir dxvk-nvapi-v0.9.0 > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command tar -xf dxvk-nvapi-v0.9.0.tar.gz -C "~/$BOTTLES_NVAPI_PATH/dxvk-nvapi-v0.9.0" > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command rm -v dxvk-nvapi-v0.9.0.tar.gz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
@@ -202,7 +202,7 @@ setup_bottles_get_dll() {
     if ! ls -d latencyflex*/ >/dev/null 2>&1; then
         log red "No latencyflex found"
         log yellow "Getting latencyflex"
-        run_command wget https://github.com/ishitatsuyuki/LatencyFleX/releases/download/v0.1.1/latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
+        run_command curl -LO https://github.com/ishitatsuyuki/LatencyFleX/releases/download/v0.1.1/latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command tar -xf latencyflex-v0.1.1.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
         run_command rm -v latencyflex*.tar.xz > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     else log green "latencyflex found"
@@ -231,14 +231,17 @@ install_check_stalker_gamma_cli_version() {
 }
 install_get_stalker_gamma_cli() {
     run_command cd $GAMMA_DIR
-
     log cyan "install_get_stalker_gamma_cli: Downloading latest release of stalker-gamma-cli"
-
-    run_command wget $STALKER_GAMMA_CLI_URL -O stalker-gamma.AppImage
-
+    run_command curl -Lo "./stalker-gamma.AppImage" $STALKER_GAMMA_CLI_URL > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
     run_command chmod +x stalker-gamma.AppImage > >(tee -a "$LOG_FILE") 2> >(tee -a "$LOG_FILE" >&2)
 }
-
+update_or_install_stalker_gamma_cli() {
+    install_get_stalker_gamma_cli
+    local end_time
+    end_time="$(date +%s)"
+    log "Main: action finished in $((end_time - START_TIME)) seconds"
+    user_chooses
+}
 install() {
     run_command cd $GAMMA_DIR
     install_get_stalker_gamma_cli
@@ -280,7 +283,8 @@ greet() {
     log "Possible actions:"
     log "[1] - Install game files with stalker-gamma-cli"
     log "[2] - Setup flatpak GAMMA bottle"
-    log "[3] - Exit"
+    log "[3] - Update/install stalker-gamma-cli"
+    log "[4] - Exit"
     log "-------------------------------------------------------"
 }
 user_chooses() {
@@ -300,6 +304,9 @@ user_chooses() {
             setup
             selected=true
         elif [ "$user_input_select" = "3" ]; then
+            update_or_install_stalker_gamma_cli
+            selected=true
+        elif [ "$user_input_select" = "4" ]; then
             die_exit
         else
             log red "[${user_input_select}] - Not a valid input!"
