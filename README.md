@@ -134,7 +134,7 @@ The `logs` folder contains a log file of the terminal output.
 
 - **Bottle setup hangs during winetricks/dependency setup**
 
-Seems to occur on Arch/Hyprland setups, for some reason the pop up window(regsvr32.exe) appears in task process list(like `btop` or any other monitor sofware) but does not appear as a visual window, thus you can't hit OK, and continue on with the setup of the quartz .dll part of the winetricks command.
+Seems to occur on Arch/Hyprland setups, for some reason the pop up window(regsvr32.exe, see step 3.5 of the install guide) appears in task process list(like `btop` or any other monitor sofware) but does not appear as a visual window, thus you can't hit OK, and continue on with the setup of the quartz .dll part of the winetricks command.
 The issue seems to appear only when the command is ran via the script, so you should be able to run the winetricks manually.
 To remedy, try copy pasting this in the a new terminal instance:
 ```
