@@ -278,7 +278,7 @@ greet() {
     log "-------------------------------------------------------"
     log "Stalker GAMMA community install/setup shell scripts"
     log "version: [$SCRIPT_VERSION]"
-    log "git version: [$SCRIPT_GIT_VERSION]"
+    log "git version (commit): [$SCRIPT_GIT_VERSION]"
     log "For ducumentation see:"
     log "https://github.com/ViridiLV/gamma-scripts/"
     log "-------------------------------------------------------"
