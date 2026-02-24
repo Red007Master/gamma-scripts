@@ -351,6 +351,10 @@ die() {
 }
 
 run_command() {
+    if [ ! -d $LOG_FOLDER ]; then
+        echo "Log folder not found, creating..."
+        mkdir -pv $LOG_FOLDER
+    fi
     log magenta "Running Command: [$*]" | tee -a "$LOG_FILE"
     eval "$@"
 }
@@ -358,8 +362,6 @@ run_command() {
 main() {
     run_command mkdir -p $GAMMA_DIR
     run_command cd $GAMMA_DIR
-    # Making sure LOG_FOLDER exists.
-    run_command mkdir -p $LOG_FOLDER
     log "Main: script started (${SCRIPT_NAME})"
     user_chooses
     log "Main: unexpected script end. Input anything to exit. \o"
