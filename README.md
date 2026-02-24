@@ -35,7 +35,7 @@ Version numbers inside the scripts are informative for troubleshooting logs.
 - **1.2.** Download the script file:
 
   ```
-  wget https://raw.githubusercontent.com/ViridiLV/gamma-scripts/refs/heads/main/gamma-scripts.sh
+  curl -O https://raw.githubusercontent.com/ViridiLV/gamma-scripts/refs/heads/main/gamma-scripts.sh
   ```
 
 - **1.3.** Make it executable(this is optional if you choose to execute from already open terminal)
