@@ -138,7 +138,7 @@ The `logs` folder contains a log file of the terminal output.
 
 - ~~migrate wget to curl~~
 - add feature - automated save and settings file backup via the script
-- ~~add feature - update/download latests stalker-gamma-cli only~~
+- ~~add feature - update/download latest stalker-gamma-cli only~~
 - add feature - stalker-gamma-cli update check and update apply via the script
 - install game option available only if no game detected
 - setup available only if no setup done
