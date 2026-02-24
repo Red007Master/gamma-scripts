@@ -132,6 +132,20 @@ You can run via the Bottles or using a terminal command if you don't want to int
 
 The `logs` folder contains a log file of the terminal output.
 
+- **Bottle setup hangs during winetricks/dependency setup**
+
+Seems to occur on Arch/Hyprland setups, for some reason the pop up window appears in task process list(like `btop` or any other monitor sofware) but does not appear as a visual window, thus you can't hit OK, and continue on with the setup of the quartz .dll part of the winetricks command.
+The issue seems to appear only when the command is ran via the script, so you should be able to run the winetricks manually.
+To remedy, try copy pasting this in the a new terminal instance:
+```
+BOTTLE_NAME="StalkerGAMMA" |
+RUNNER_NAME="ge-proton9-20" |
+BOTTLES_RUNNER_PATH=".var/app/com.usebottles.bottles/data/bottles/runners" |
+BOTTLES_RUNNER_WINE="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/files/bin/wine" |
+BOTTLES_PREFIX_PATH=".var/app/com.usebottles.bottles/data/bottles/bottles/$BOTTLE_NAME" |
+BOTTLES_RUNNER_WINETRICKS="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/protonfixes/winetricks" |
+WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz
+```
 ***Work in progress***
 
 ## To Do list - planned changes and features
