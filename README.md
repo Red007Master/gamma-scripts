@@ -146,6 +146,7 @@ BOTTLES_PREFIX_PATH=".var/app/com.usebottles.bottles/data/bottles/bottles/$BOTTL
 BOTTLES_RUNNER_WINETRICKS="$BOTTLES_RUNNER_PATH/$RUNNER_NAME/protonfixes/winetricks" &&
 WINE=~/"$BOTTLES_RUNNER_WINE" WINEPREFIX=~/"$BOTTLES_PREFIX_PATH" ~/$BOTTLES_RUNNER_WINETRICKS cmd d3dx9 dx8vb d3dcompiler_42 d3dcompiler_43 d3dcompiler_46 d3dcompiler_47 d3dx10_43 d3dx10 d3dx11_42 d3dx11_43 dxvk quartz
 ```
+This was the last step of the setup gamma scripted actions, so your bottle setup should be fine and you should be able to play the game.
 
 ## To Do list - planned changes and features
 
