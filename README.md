@@ -11,12 +11,12 @@ For scripts to work it will need libraries/packages that it uses.
 
 - **For Ubuntu/Debian systems:**
 ```
-apt install flatpak wget tar
+apt install flatpak curl tar
 ```
 
 - **For Arch-based systems:**
 ```
-sudo pacman -S flatpak wget tar
+sudo pacman -S flatpak curl tar
 ```
 
 ## Step 1 - getting the scripts
