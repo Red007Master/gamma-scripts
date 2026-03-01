@@ -119,7 +119,6 @@ The setup script aims to streamline this  process by scripting the set up of fla
     
 ## Step 4 - Running the game
 
-You can run via the Bottles or using a terminal command if you don't want to interact with Bottles menus:
 
  - **a)** Open bottles "StalkerGAMMA", press play on Program "ModOrganizer"
 
